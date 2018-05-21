@@ -1,0 +1,29 @@
+{
+  "name": "nodes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compat": "^1.0.4",
+    "debug": "^3.1.0",
+    "depd": "^1.1.2",
+    "eslint": "^4.19.1",
+    "express": "^4.16.3",
+    "ipaddr.js": "^1.7.0",
+    "json": "^9.0.6",
+    "qs": "^6.5.2"
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0"
+  },
+  "description": ""
+}

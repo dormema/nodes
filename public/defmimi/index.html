@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>SIAOD NODES</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .input-color {
+            position: relative;
+        }
+
+        .input-color p {
+            padding-left: 20px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content:target {
+            display: block;
+        }
+
+        .input-color .color-box {
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            background-color: #ccc;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Latest compiled Charts.js -->
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js></script>
+</head>
+
+<body onload='onload()'>
+    <div class="row">
+        <div class="col-md-8">
+            <canvas id="myCanvas" width="720" height="640"></canvas>
+            </script>
+        </div>
+        <div class="col-sm-4">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#tab1">random</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab2">upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab3">custom</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab4">charts</a>
+                </li>
+            </ul>
+            <div id="tab1" class="tab-content">
+                <div class="well well-sm">
+                    random generation
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" id="minlen" placeholder="minlen">
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="number" class="form-control" id="amount" placeholder="# of points">
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="number" class="form-control" id="delay" placeholder="max delay">
+                        </div>
+                    </div>
+                    <button type="button" id="randomgraph" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+                        random graph
+                    </button>
+                    diagonal
+                    <input type="checkbox" id="checkb1" class="alert-status">
+                </div>
+            </div>
+            <div id="tab2" class="tab-content">
+                <div class="well well-sm">
+                    upload tab
+                    <!--<label class="btn btn-primary">
+                        Upload
+                        <input type="file" id="selectFiles" hidden="true">
+                    </label>-->
+                    <input type="file" id="selectFiles" value="Import" />
+                    <br />
+                    <button type="button" id="import" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+                        upload
+                    </button>
+                    diagonal
+                    <input type="checkbox" id="checkb2" class="alert-status">
+                </div>
+            </div>
+            <div id="tab3" class="tab-content">
+                <div class="well well-sm">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" id="nimput" placeholder="n">
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="number" class="form-control" id="minput" placeholder="m">
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <input type="number" class="form-control" id="BLOCKEDPERCENT" placeholder="Blocked %">
+                        </div>
+                    </div>
+                    <button type="button" id="drawbutton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+                        draw
+                    </button>
+                    diagonal
+                    <input type="checkbox" id="checkb3" class="alert-status">
+                </div>
+            </div>
+            <div id="tab4" class="tab-content">
+                <div class="well well-sm">
+                        <canvas id="myChart1" width="400" height="200"></canvas>
+                        <canvas id="myChart2" width="400" height="200"></canvas>
+                        <canvas id="myChart3" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div id="options" class="well well-sm" hidden=true>
+                <button type="button" id="updatebutton" data-loading-text="Loading..." class="btn btn-primary" disabled="true" autocomplete="off">
+                    update
+                </button>
+                <!--
+                    <button type="button" onclick="init();" class="btn btn-primary">
+                        init
+                    </button> 
+                    -->
+                <button type="button" id="pausebutton" class="btn btn-primary">
+                    pause
+                </button>
+                <button type="button" id="savebutton" class="btn btn-primary">
+                    save
+                </button>
+            </div>
+            <div class="well well-sm" id="pointdev" hidden=true>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="fromN" placeholder="From: n">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <input type="number" class="form-control" id="fromM" placeholder="From: m">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="toN" placeholder="To: n">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <input type="number" class="form-control" id="toM" placeholder="To: m">
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" id="newpoint" data-loading-text="Loading..." class="btn btn-primary" disabled="true" autocomplete="off">
+                        new point
+                    </button>
+                    <div class="col-sm-4 form-group">
+                        <input type="number" class="form-control" id="delay" placeholder="delay">
+                    </div>
+                </div>
+            </div>
+            <div id="points" class="well well-sm" hidden=true>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script src="astar.js"></script>
+</body>
+
+</html>
