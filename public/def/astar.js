@@ -147,11 +147,13 @@
    * @param {Array} gridIn 2D array of input weights
    * @param {Object} [options]
    * @param {bool} [options.diagonal] Specifies whether diagonal moves are allowed
+   * @param {bool} [options.tor] Specifies whether diagonal moves are allowed
    */
   function Graph(gridIn, options) {
     options = options || {};
     this.nodes = [];
     this.diagonal = !!options.diagonal;
+    this.tor = !!options.tor;
     this.grid = [];
     for (var x = 0; x < gridIn.length; x++) {
       this.grid[x] = [];
@@ -231,6 +233,30 @@
       }
     }
 
+    if (this.tor) {
+      console.log(node);
+      
+      // horizontal right
+      if (x == grid.length - 1) {
+        ret.push(grid[0][y]);
+      }
+
+      // horizontal left
+      if (x == 0) {
+        ret.push(grid[this.grid.length-1][y]);
+      }
+
+      // vertical up
+      if (y == 0) {
+        ret.push(grid[x][grid[0].length - 1]);
+      }
+
+      // Vertical Down
+      if (y == grid[0].length - 1) {
+        ret.push(grid[x][0]);
+      }
+    }
+
     return ret;
   };
 
@@ -260,7 +286,9 @@
       }
       var jsonstring = JSON.stringify(output);
       var a = document.createElement("a");
-      var file = new Blob([jsonstring], { type: 'text/plain' });
+      var file = new Blob([jsonstring], {
+        type: 'text/plain'
+      });
       a.href = URL.createObjectURL(file);
       a.download = Date();
       a.click();

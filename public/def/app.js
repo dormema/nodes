@@ -18,6 +18,7 @@ var drawSpeed = stepSpeed / 150;
 var drawint = null;
 var stepint = null;
 var diagonal_state = false;
+var tor_state = false;
 var step = 0;
 
 if (typeof console == 'undefined') var console = { log: function () { } };
@@ -248,10 +249,10 @@ function movepoints() {
         points[i].xc = points[i].toxc;
         points[i].yc = points[i].toyc;
 
-        if (points[i].path[points[i].currstp + 1])
+        /*if (points[i].path[points[i].currstp + 1])
             graph.grid[points[i].path[points[i].currstp + 1].x][points[i].path[points[i].currstp + 1].y].bids.push(i);
         else
-            points[i].currstp++
+            points[i].currstp++*/
     }
     
     for (let i = 0; i < points.length; i++) {
@@ -273,12 +274,12 @@ function movepoints() {
         var i = null;
         if (e.bids.length == 1) {
             i = e.bids[0];
-
         }
         if (e.bids.length > 1) {
             i = e.bids[Math.floor(e.bids.length * Math.random())];
             for (let c = 0; c < e.bids.length; c++) {
                 points[e.bids[c]].con++
+                console.log('kek');
                 e.bids[c] != i ? points[e.bids[c]].lost++ : 0;
             }
         }
@@ -408,7 +409,7 @@ function init() {
     cols = 15;
     BLOCKEDPERCENT = 0;
     graph = createGraph(rows, cols, BLOCKEDPERCENT);
-    addPath(4, 4, 4, 12);
+    addPath(4, 4, 4, 12, 5);
     addPath(3, 2, 9, 2);
     addPath(4, 3, 4, 0);
     addPath(4, 10, 4, 0);
@@ -512,7 +513,7 @@ function createGraph(rows, cols, BLOCKEDPERCENT) {
         document.getElementById('pointdev').hidden = false;
         document.getElementById('options').hidden = false;
         //return new Graph(imput);
-        return new Graph(imput, { diagonal: diagonal_state });
+        return new Graph(imput, { diagonal: diagonal_state , tor: tor_state});
     }
     return null;
 }
