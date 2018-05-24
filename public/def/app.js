@@ -25,6 +25,7 @@ if (typeof console == 'undefined') var console = { log: function () { } };
 
 function onload() {
     console.log('Page loaded.');
+    // Listener to block/unblock node.
     canvas.addEventListener("click", canvasClick, false);
 }
 
@@ -35,9 +36,9 @@ $('#drawbutton').on('click', function () {
     pathFinding();
 });
 
+// Delete all points, but keep graph structure intact.
 $('#updatebutton').on('click', function () {
-    points = [];
-    points = [];
+    points = []; 
     document.getElementById('points').innerHTML = '';
     document.getElementById('points').hidden = true;
     pathFinding();
@@ -57,6 +58,7 @@ $('#newpoint').on('click', function () {
     var toN = parseInt(document.getElementById('toN').value);
     var toM = parseInt(document.getElementById('toM').value);
     var delay = parseInt(document.getElementById('delaybox').value);
+    // AddPath returns true if adding point was successful.
     if (addPath(fromN, fromM, toN, toM, delay)) {
         document.getElementById('points').hidden = false;
         document.getElementById('points').innerHTML = '';
@@ -74,6 +76,7 @@ $('#randomgraph').on('click', function () {
     var minlen = parseInt(document.getElementById('minlen').value);
     var amount = parseInt(document.getElementById('amount').value);
     var delay = parseInt(document.getElementById('delay').value);
+    // randomgr returns true if creating random graph was successfeull.
     if (randomgr(minlen, amount, delay)) {
         document.getElementById('points').hidden = false;
         document.getElementById('points').innerHTML = '';
@@ -85,20 +88,27 @@ $('#randomgraph').on('click', function () {
     draw();
 });
 
+//Main function
+//Probably should rename it.
 function pathFinding() {
+    // If there is no graph - CREATE IT! 
     if (!graph || graph == null) {
         rows = parseInt(document.getElementById('nimput').value);
         cols = parseInt(document.getElementById('minput').value);
         BLOCKEDPERCENT = parseFloat(document.getElementById('BLOCKEDPERCENT').value);
         if (rows > 0 && cols > 0 && BLOCKEDPERCENT >= 0 && BLOCKEDPERCENT <= 1) {
             graph = createGraph(rows, cols, BLOCKEDPERCENT);
+			// Yeah, recursion isn't good
             pathFinding();
         }
     }
     else {
+		//Create those noce chart with Chart.js library.
         createcharts();
         drawSpeed = Math.ceil(drawSpeed);
-        drawint = setInterval(function () { paused ? 0 : draw(); }, drawSpeed); //10
+		// If not paused call draw every "drawSpeed" miliseconds, something around 10.
+        drawint = setInterval(function () { paused ? 0 : draw(); }, drawSpeed);
+		// If not paused move points to next node, add data to charts every "stepSpeed" miliseconds, 2000.
         stepint = setInterval(function () {
             if (!paused) {
                 movepoints();
@@ -423,6 +433,13 @@ function init() {
     pathFinding();
 }
 
+/**
+* Generate random graph with dimensions from 5X5 to 20X20.
+* @param {Number} minlen minimal path lenght of points.
+* @param {Number} Amount of points.
+* @param {Number} Specifies max delay for points.
+* @returns {bool} Returns true if operation was successful.
+*/
 function randomgr(minlen, amount, delay) {
     //cleanup();
     if (minlen < 1 || amount < 1 || delay < 0) {
@@ -453,6 +470,15 @@ function randomgr(minlen, amount, delay) {
     return true;
 }
 
+/**
+* Add point.
+*  @param {Number} fromN Start x coordinate.
+*  @param {Number} fromM Start y coordinate.
+*  @param {Number} toN Destination x.
+*  @param {Number} toM Destination y.
+*  @param {Number} delay Delay before starting movement, counts in turns.(See stepSpeed)
+*  @returns {bool} Returns true if operation was successful.
+*/
 function addPath(fromN, fromM, toN, toM, delay) {
     delay = parseInt(delay);
     
@@ -493,6 +519,7 @@ function addPath(fromN, fromM, toN, toM, delay) {
     return false;
 }
 
+// Create random graph
 function createGraph(rows, cols, BLOCKEDPERCENT) {
     var imput = [];
     if (BLOCKEDPERCENT >= 0 && BLOCKEDPERCENT < 1 && rows > 0 && cols > 0) {
@@ -518,6 +545,7 @@ function createGraph(rows, cols, BLOCKEDPERCENT) {
     return null;
 }
 
+// Delete graph, points and clear canvas, Like you just reloaded the page
 function cleanup() {
     points = [];
     graph = 0;
@@ -527,7 +555,7 @@ function cleanup() {
         clearInterval(stepint);
 }
 
-//generate random hex
+// Generate random hex
 function getRandomColor() {
     var letters = '123456789ABCDE';
     var color = '#';
@@ -537,7 +565,7 @@ function getRandomColor() {
     return color;
 }
 
-//list of points
+// List of points
 function makeUL(array) {
     var list = document.createElement('ul');
     for (var i = 0; i < array.length; i++) {
@@ -561,7 +589,7 @@ function makeUL(array) {
     return list;
 }
 
-//shortcuts
+// Keyboard Shortcuts
 window.onkeydown = function (e) {
     var code = e.keyCode ? e.keyCode : e.which;
     if (code === 73) {
@@ -581,12 +609,12 @@ window.onkeydown = function (e) {
     }
 };
 
-//pause movement
+// Pause movement
 function pause() {
     paused = paused ? !1 : !0
 }
 
-//add and remove nodes
+// Add and remove nodes
 function canvasClick(e) {
     var x;
     var y;
@@ -607,7 +635,8 @@ function canvasClick(e) {
     graph.grid[x][y].weight = 0 < graph.grid[x][y].weight ? 0 : 1
 }
 
-//upload
+// Load graph from saved state
+// TODO: Add loading points.
 document.getElementById('import').onclick = function () {
     var files = document.getElementById('selectFiles').files;
     if (files.length <= 0) {
@@ -642,6 +671,7 @@ document.getElementById('import').onclick = function () {
     fr.readAsText(files.item(0));
 };
 
+//Synchronous checkbox for all tabs
 $('#checkb1').click(function () {
     if ($(this).is(':checked')) {
         document.getElementById('checkb2').checked = true;
