@@ -1,8 +1,5 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
-var chartx1 = document.getElementById("myChart1").getContext('2d');
-var chartx2 = document.getElementById("myChart2").getContext('2d');
-var chartx3 = document.getElementById("myChart3").getContext('2d');
 var cols;
 var rows;
 var xoffset;
@@ -104,7 +101,7 @@ function pathFinding() {
     }
     else {
 		//Create those noce chart with Chart.js library.
-        createcharts();
+        createCharts();
         drawSpeed = Math.ceil(drawSpeed);
 		// If not paused call draw every "drawSpeed" miliseconds, something around 10.
         drawint = setInterval(function () { paused ? 0 : draw(); }, drawSpeed);
@@ -123,7 +120,10 @@ function pathFinding() {
     }
 }
 
-function createcharts() {
+function createCharts() {
+    var chartx1 = document.getElementById("myChart1").getContext('2d');
+    var chartx2 = document.getElementById("myChart2").getContext('2d');
+    var chartx3 = document.getElementById("myChart3").getContext('2d');
     myChartx1 = new Chart(chartx1, {
         type: 'line',
         data: {
