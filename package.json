@@ -25,5 +25,13 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDanmar/nodes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TheDanmar/nodes/issues"
+  },
+  "homepage": "https://github.com/TheDanmar/nodes#readme",
   "description": ""
 }
